@@ -147,13 +147,6 @@ def deploy(
         os.path.join('deployments', deployment, 'secrets', f'{environment}.yaml'),
     ] if os.path.exists(f)]
 
-    # Check for same pattern of files in a dir called 'secrets'
-    # This supports keeping the secrets in a different git repo
-    helm_secret_repo_files = [
-        os.path.join('secrets', f) for f in helm_config_files
-        if os.path.exists(os.path.join('secrets', f))
-    ]
-
     for image in config['images']['images']:
         # We can support other charts that wrap z2jh by allowing various
         # config paths where we set image tags and names.
@@ -166,7 +159,7 @@ def deploy(
         name,
         namespace,
         chart,
-        helm_config_files + helm_secret_repo_files,
+        helm_config_files,
         helm_config_overrides_implicit,
         helm_config_overrides_string,
         version,
